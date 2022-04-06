@@ -5,7 +5,7 @@ const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint; //restrições (ainda não iremos usar)
 
 //variáveis
-var engine, world, solo, torre, cannon, angle;
+var engine, world, solo, torre, cannon, angle, ball;
 var fundo_img, torre_img;
 
 
@@ -31,13 +31,15 @@ function setup() {
   World.add(world,solo);
   
   angle = 20;
-  //criacao do canhao
+  //criacao do canhao (objeto a partir da classe)
   cannon = new Cannon(180,110,130,100,angle);
 
   //criação do corpo da torre
   torre = Bodies.rectangle(160,350,160,310,options);
   World.add(world,torre);
-  
+
+  //criação da bola (objeto a partir da classe)
+  ball = new CannonBall(cannon.x,cannon.y);
  
 }
 
@@ -60,7 +62,10 @@ function draw() {
   image(torre_img,torre.position.x,torre.position.y,160,310);
   pop(); //tira essa nova configuração
 
+  ball.show();
   cannon.show();
+
+  
 
   
    

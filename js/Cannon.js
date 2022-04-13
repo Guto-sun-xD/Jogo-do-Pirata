@@ -10,9 +10,20 @@ class Cannon{
     }
   
     show(){
+        
+        if(keyIsDown(RIGHT_ARROW) && this.a < +50){
+            this.a += 1;
+        }
+        
+        if(keyIsDown(LEFT_ARROW) && this.a > -30){
+            this.a -= 1;
+        }
+          
         push();
+        translate(this.x, this.y);
+        rotate(this.a);
         imageMode(CENTER);
-        image(this.canhao,this.x,this.y,this.w,this.h);
+        image(this.canhao,0,0,this.w,this.h);
         pop();
 
         image(this.base,70,20,200,200);

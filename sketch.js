@@ -5,7 +5,7 @@ const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint; //restrições (ainda não iremos usar)
 
 //variáveis
-var engine, world, solo, torre, cannon, angle, ball, balls=[], boat;
+var engine, world, solo, torre, cannon, angle, ball, balls=[], boat, boats=[];
 var fundo_img, torre_img;
 
 
@@ -42,9 +42,7 @@ function setup() {
   //criação da bola (objeto a partir da classe CannonBall)
   ball = new CannonBall(cannon.x,cannon.y);
 
-  //criação do barco (objeto a partir da classe Boat)
-  boat = new Boat(width-80, height-60, 170, 170, -80);
- 
+  
 }
 
 function draw() {
@@ -72,13 +70,9 @@ function draw() {
     showCannonBalls(balls[i],i);
   }
 
-  //exibe o barco
-  boat.show();
+  
 
-  Matter.Body.setVelocity(boat.body,{
-    x:-5,
-    y:0,
-  });
+  showBoats();
   
 }
 
@@ -88,7 +82,7 @@ function keyReleased() {
   }
 }
 function keyPressed(){
-if(keyCode == 32){
+  if(keyCode == 32){
   //criação da bola (objeto a partir da classe)
   ball = new CannonBall(cannon.x,cannon.y);
   balls.push(ball);
@@ -98,5 +92,29 @@ if(keyCode == 32){
 function showCannonBalls(ball, i) {
   if(ball){
     ball.show()
+  }
+}
+
+function showBoats(){
+  if(boats.length > 0){
+  if(boats[boats.length-1] == undefined || boats[boats.length-1].body.position.x < width - 300){
+  var positions = [-70,-110,-200,-90];
+  var position = random(positions);
+  boat = new Boat(width-80, height-60, 170, 170, position);
+  boats.push(boat);  
+}
+  for(var i = 0; i < boats.length; i++){
+    Matter.Body.setVelocity(boat.body,{
+      x:-5,
+      y:0,
+    });
+    boats[i].show()
+  } 
+    
+}
+  else{
+    //criação do barco (objeto a partir da classe Boat)
+  boat = new Boat(width-80, height-60, 170, 170, -80);
+  boats.push(boat);
   }
 }

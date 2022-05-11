@@ -97,6 +97,9 @@ function keyPressed(){
 function showCannonBalls(ball, i) {
   if(ball){
     ball.show()
+    if(ball.body.position.x>=width || ball.body.position.y>=height-50){
+      ball.remove(i);
+    }
   }
 }
 
@@ -109,12 +112,14 @@ function showBoats(){
   boats.push(boat);  
 }
   for(var i = 0; i < boats.length; i++){
-    Matter.Body.setVelocity(boat.body,{
+    if(boats[i]){
+      Matter.Body.setVelocity(boat.body,{
       x:-2,
       y:0,
     });
     boats[i].show();
-  } 
+  }
+ } 
 }
   else{
     //criação do barco (objeto a partir da classe Boat)

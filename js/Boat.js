@@ -19,8 +19,8 @@ class Boat
 
         setTimeout(() => {
             Matter.World.remove(world, this.body);
-            delete balls[index];
-        }, 2000); //tempo é dado em milissegundos
+            delete boats[index];
+        }, 500); //tempo é dado em milissegundos
     }
 
     show(){

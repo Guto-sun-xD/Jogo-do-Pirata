@@ -27,7 +27,7 @@ function setup() {
     isStatic: true
   }
 
-  solo = Bodies.rectangle(0,height-1,width,1,options);
+  solo = Bodies.rectangle(width/2,height-1,width*2,1,options);
   World.add(world,solo);
   
   angleMode(DEGREES);
@@ -55,7 +55,10 @@ function draw() {
   Engine.update(engine);
 
   //desenhar o corpo do solo (rect, biblioteca p5)
+  push();
+  rectMode(CENTER);
   rect(solo.position.x, solo.position.y,width*2,1);
+  pop();
   
   //desenhar o corpo da torre
   push(); //insere uma nova configuração
@@ -66,8 +69,10 @@ function draw() {
   //exibe o canhão
   cannon.show();
   
+  //percorre a matriz bolas para mostrá-las e detectar sua colisão com o barco
   for(var i=0; i < balls.length; i += 1){
     showCannonBalls(balls[i],i);
+    collisionWithBoat(i);
   }
 
   
@@ -97,24 +102,44 @@ function showCannonBalls(ball, i) {
 
 function showBoats(){
   if(boats.length > 0){
-  if(boats[boats.length-1] == undefined || boats[boats.length-1].body.position.x < width - 300){
-  var positions = [-70,-110,-200,-90];
+  if(boats[boats.length-1] == undefined || boats[boats.length-1].body.position.x < width - 450){
+  var positions = [-70,-110,-60,-90];
   var position = random(positions);
   boat = new Boat(width-80, height-60, 170, 170, position);
   boats.push(boat);  
 }
   for(var i = 0; i < boats.length; i++){
     Matter.Body.setVelocity(boat.body,{
-      x:-5,
+      x:-2,
       y:0,
     });
-    boats[i].show()
+    boats[i].show();
   } 
-    
 }
   else{
     //criação do barco (objeto a partir da classe Boat)
   boat = new Boat(width-80, height-60, 170, 170, -80);
   boats.push(boat);
+  }
+}
+
+function collisionWithBoat(index){
+  //percorrer a matriz de barcos
+  for(var i=0; i < boats.length; i=i+1){
+    //detectar a colisão
+    if(balls[index] !== undefined && boats[i] != undefined){
+    //         0                           0
+    //         0                           1
+    //         1                           0
+    //         1                           1 
+
+    var collision = Matter.SAT.collides(balls[index].body,boats[i].body);
+
+    if(collision.collided){
+      boats[i].remove(i);
+      Matter.World.remove(world,balls[index].body);
+      delete balls[index];
+    }
+    }
   }
 }

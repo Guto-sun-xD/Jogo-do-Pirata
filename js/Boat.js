@@ -13,6 +13,16 @@ class Boat
 
     //métodos
 
+    remove(index){
+        //inserir código
+        Matter.Body.setVelocity(this.body,{x:0,y:0});
+
+        setTimeout(() => {
+            Matter.World.remove(world, this.body);
+            delete balls[index];
+        }, 2000); //tempo é dado em milissegundos
+    }
+
     show(){
         var angle = this.body.angle;
         push();

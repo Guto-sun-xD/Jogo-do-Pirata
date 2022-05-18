@@ -10,7 +10,8 @@ var fundo_img, torre_img;
 
 var boatAnimation = [];
 var boatJSON, boatPNG; 
-
+var boatBrokenAnimation = []
+var boatBrokenJSON, boatBrokenPNG
 
 //pré-carregamento das imagens
 function preload() {
@@ -18,6 +19,8 @@ function preload() {
   torre_img = loadImage("assets/tower.png");
   boatJSON = loadJSON("assets/boat/boat.json"); //spritedata
   boatPNG = loadImage("assets/boat/boat.png"); //spritesheet
+  boatBrokenJSON = loadJSON("assets/boat/brokenBoat.json");
+  boatBrokenPNG = loadImage("assets/boat/brokenBoat.png");
 }
 
 function setup() {
@@ -52,6 +55,13 @@ function setup() {
     var pos = boatFrames[i].position;
     var img = boatPNG.get(pos.x,pos.y,pos.w,pos.h);
     boatAnimation.push(img);
+  }
+  
+  var boatBrokenFrames = boatBrokenJSON.frames;
+  for(var i=0; i<boatBrokenFrames.length; i++){
+    var pos = boatBrokenFrames[i].position;
+    var img = boatBrokenPNG.get(pos.x,pos.y,pos.w,pos.h);
+    boatBrokenAnimation.push(img);
   }
 
 }

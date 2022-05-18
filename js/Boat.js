@@ -11,6 +11,7 @@ class Boat
         this.posY = posY;
         this.animation = boatAnimation;
         this.speed = 0.05;
+        this.IsBroken = false
     }
 
     animate(){
@@ -22,7 +23,11 @@ class Boat
     remove(index){
         //inserir código
         Matter.Body.setVelocity(this.body,{x:0,y:0});
-
+        this.animation = boatBrokenAnimation;
+        this.speed = 0.06
+        this.w = 300;
+        this.h = 300;
+        this.IsBroken = true
         setTimeout(() => {
             Matter.World.remove(world, this.body);
             delete boats[index];

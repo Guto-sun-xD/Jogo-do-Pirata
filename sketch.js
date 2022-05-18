@@ -8,11 +8,16 @@ const Constraint = Matter.Constraint; //restrições (ainda não iremos usar)
 var engine, world, solo, torre, cannon, angle, ball, balls=[], boat, boats=[];
 var fundo_img, torre_img;
 
+var boatAnimation = [];
+var boatJSON, boatPNG; 
+
 
 //pré-carregamento das imagens
 function preload() {
   fundo_img = loadImage("assets/background.gif");
   torre_img = loadImage("assets/tower.png");
+  boatJSON = loadJSON("assets/boat/boat.json"); //spritedata
+  boatPNG = loadImage("assets/boat/boat.png"); //spritesheet
 }
 
 function setup() {
@@ -22,16 +27,18 @@ function setup() {
   engine = Engine.create();
   //criação do mundo
   world = engine.world;
+
+  angleMode(DEGREES);
+  angle = 20;
+
   //criação do corpo do solo
   var options = {
     isStatic: true
   }
 
-  solo = Bodies.rectangle(width/2,height-1,width*2,1,options);
+  solo = Bodies.rectangle(0,height-1,width*2,1,options); //estava width/2 na posX
   World.add(world,solo);
   
-  angleMode(DEGREES);
-  angle = 20;
   //criacao do canhao (objeto a partir da classe)
   cannon = new Cannon(180,110,130,100,angle);
 
@@ -39,10 +46,14 @@ function setup() {
   torre = Bodies.rectangle(160,350,160,310,options);
   World.add(world,torre);
 
-  //criação da bola (objeto a partir da classe CannonBall)
-  ball = new CannonBall(cannon.x,cannon.y);
+  //animação do barco inteiro
+  var boatFrames = boatJSON.frames;
+  for(var i=0; i<boatFrames.length; i++){
+    var pos = boatFrames[i].position;
+    var img = boatPNG.get(pos.x,pos.y,pos.w,pos.h);
+    boatAnimation.push(img);
+  }
 
-  
 }
 
 function draw() {
@@ -108,22 +119,24 @@ function showBoats(){
   if(boats[boats.length-1] == undefined || boats[boats.length-1].body.position.x < width - 450){
   var positions = [-70,-110,-60,-90];
   var position = random(positions);
-  boat = new Boat(width-80, height-60, 170, 170, position);
+  boat = new Boat(width-80, height-60, 170, 170, position, boatAnimation);
   boats.push(boat);  
 }
   for(var i = 0; i < boats.length; i++){
     if(boats[i]){
-      Matter.Body.setVelocity(boat.body,{
+      Matter.Body.setVelocity(boats[i].body,{ 
       x:-2,
       y:0,
     });
     boats[i].show();
+    boats[i].animate();
+
   }
  } 
 }
   else{
     //criação do barco (objeto a partir da classe Boat)
-  boat = new Boat(width-80, height-60, 170, 170, -80);
+  boat = new Boat(width-80, height-60, 170, 170, -80, boatAnimation);
   boats.push(boat);
   }
 }

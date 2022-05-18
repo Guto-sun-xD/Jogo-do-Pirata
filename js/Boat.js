@@ -1,14 +1,20 @@
 class Boat
 {
     //características
-    constructor(x,y,w,h,posY){
+    constructor(x,y,w,h,posY,boatAnimation){
         
         this.body = Bodies.rectangle(x,y,w,h);
-        this.image = loadImage("assets/boat.png");
+        //this.image = loadImage("assets/boat.png");
         World.add(world,this.body);
         this.w = w;
         this.h = h;
         this.posY = posY;
+        this.animation = boatAnimation;
+        this.speed = 0.05;
+    }
+
+    animate(){
+        this.speed += 0.05;
     }
 
     //métodos
@@ -25,11 +31,12 @@ class Boat
 
     show(){
         var angle = this.body.angle;
+        var index = floor(this.speed % this.animation.length);
         push();
         translate(this.body.position.x, this.body.position.y);
         rotate(angle);
         imageMode(CENTER);
-        image(this.image,0,this.posY,this.w, this.h);
+        image(this.animation[index],0,this.posY,this.w, this.h);
         pop();
 
         

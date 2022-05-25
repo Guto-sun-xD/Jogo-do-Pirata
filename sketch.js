@@ -11,7 +11,8 @@ var fundo_img, torre_img;
 var boatAnimation = [];
 var boatJSON, boatPNG; 
 var boatBrokenAnimation = []
-var boatBrokenJSON, boatBrokenPNG
+var boatBrokenJSON, boatBrokenPNG;
+var isGameOver = false;
 
 //pré-carregamento das imagens
 function preload() {
@@ -140,6 +141,11 @@ function showBoats(){
     });
     boats[i].show();
     boats[i].animate();
+    var collision = Matter.SAT.collides(torre,boats[i].body);
+    if(collision.collided){
+      gameOver();
+      isGameOver = true;
+    }
 
   }
  } 
@@ -170,4 +176,20 @@ function collisionWithBoat(index){
     }
     }
   }
+}
+
+function gameOver(){
+  swal({ //sw = sweet e al = alert
+    title: 'Fim de jogo',
+    text: "Obrigada por jogar",
+    imageUrl:  "https://raw.githubusercontent.com/whitehatjr/PiratesInvasion/main/assets/boat.png",
+    imageSize: "150x150",
+    confirmButtonText: "Jogar Novamente",
+  },
+  function(isConfirm){
+    if(isConfirm){
+      location.reload();
+    }
+  }
+  );
 }

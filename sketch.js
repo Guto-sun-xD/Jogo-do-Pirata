@@ -7,6 +7,7 @@ const Constraint = Matter.Constraint; //restrições (ainda não iremos usar)
 //variáveis
 var engine, world, solo, torre, cannon, angle, ball, balls=[], boat, boats=[];
 var fundo_img, torre_img;
+var points = 0;
 
 var boatAnimation = [];
 var boatJSON, boatPNG; 
@@ -116,7 +117,8 @@ function draw() {
     showCannonBalls(balls[i],i);
     collisionWithBoat(i);
   }
-
+textSize(24)
+text(`Pontos: ${points}`, 50,100);
   
 
   showBoats();
@@ -206,6 +208,7 @@ function collisionWithBoat(index){
       boats[i].remove(i);
       Matter.World.remove(world,balls[index].body);
       delete balls[index];
+      points +=1;
     }
     }
   }
